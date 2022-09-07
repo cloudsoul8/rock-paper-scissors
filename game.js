@@ -6,7 +6,6 @@ function getComputerChoice() {
 
 }
 function playRound(playerSelection, computerSelection) {
-    //if ()
     return 
 }
 
