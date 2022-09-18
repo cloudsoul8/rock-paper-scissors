@@ -9,37 +9,44 @@ function getComputerChoice() {
 }
 function playRound(playerSelection, computerSelection) {
     playerLower = playerSelection.toLowerCase()
-    computerLower = computerSelection.toLowerCase()
-
-    console.log(playerLower + " vs " + computerLower)
+    computerLower = computerSelection.toLowerCase() 
     if (playerLower == "rock" && computerLower == "scissors" ||
     playerLower == "paper" && computerLower == "rock" || 
     playerLower == "scissors" && computerLower == "paper") {
-        playerScore++
-        return `You win! ${playerLower} beats ${computerLower}` 
+        return "win"
     }
 
     else if (playerLower == computerLower) {
-        return `It's a tie. Both selected ${playerLower}`
+        return "tie"
     }
 
     else {
-        computerScore++
-        return `You lose... ${computerLower} beats ${playerLower}` 
+        return "lose"
     }
            
 }
 
 function game() {
+    let result = ""
     let playerChoice = ""
     let computerChoice = ""
     console.log(computerChoice)
 
-    while (true) {
+    for (i = 0; i < 5; i++) {
         playerChoice = prompt("write your choice")
         computerChoice = getComputerChoice()
-        console.log(playRound(playerChoice,computerChoice)) 
+        result = playRound(playerChoice,computerChoice)
 
+        console.log(playerChoice + " vs " + computerChoice)
+        if (result == 'win') {
+            playerScore++
+        }
+        else if (result == 'lose') {
+            computerScore++
+        }
+        else if (result == 'tie') {
+            i--
+        }
         
         if (playerScore == 3) {
             console.log("player wins!")
