@@ -5,52 +5,73 @@ let computerScore = 0
 function getComputerChoice() {  
     // math random is inclusive 1
     return choices[Math.floor((Math.random() * 3))]
-    
 }
-function playRound(playerSelection, computerSelection) {
-    playerLower = playerSelection.toLowerCase()
-    computerLower = computerSelection.toLowerCase()
 
-    console.log(playerLower + " vs " + computerLower)
-    if (playerLower == "rock" && computerLower == "scissors" ||
-    playerLower == "paper" && computerLower == "rock" || 
-    playerLower == "scissors" && computerLower == "paper") {
+function checkRoundResult(playerSelection, computerSelection) {
+    const roundContainer = document.querySelector('#round-container')
+    
+    if (playerSelection == "rock" && computerSelection == "scissors" ||
+    playerSelection == "paper" && computerSelection == "rock" || 
+    playerSelection == "scissors" && computerSelection == "paper") {
         playerScore++
-        return `You win! ${playerLower} beats ${computerLower}` 
+        roundContainer.textContent = `${playerSelection} vs ${computerSelection}. you won this round!`
+
     }
 
-    else if (playerLower == computerLower) {
-        return `It's a tie. Both selected ${playerLower}`
+    else if (playerSelection == computerSelection) {
+        roundContainer.textContent = `${playerSelection} vs ${computerSelection}. it's a tie round!`
     }
 
     else {
         computerScore++
-        return `You lose... ${computerLower} beats ${playerLower}` 
+        roundContainer.textContent = `${playerSelection} vs ${computerSelection}. you lost this round...`
+
     }
+
+    updateScoreDisplay()
+    checkIfGameEnd()
            
 }
 
-function game() {
-    let playerChoice = ""
-    let computerChoice = ""
-    console.log(computerChoice)
-
-    while (true) {
-        playerChoice = prompt("write your choice")
-        computerChoice = getComputerChoice()
-        console.log(playRound(playerChoice,computerChoice)) 
-
-        
-        if (playerScore == 3) {
-            console.log("player wins!")
-            break;
-        }
-
-        else if (computerScore == 3) {
-            console.log("player lost...")
-            break;
-        }
+function checkIfGameEnd() {
+    if (playerScore === 3) {
+        updateResultContainer("you won the game!")
+        disableButtons()
     }
+    
+    if (computerScore === 3) {
+        updateResultContainer("you lost the game...")
+        disableButtons()
+    }
+    
 }
 
-game()
+function disableButtons() {
+    buttons.forEach(button => {
+        button.disabled = true
+    })
+}
+
+function updateResultContainer(msg) {
+    const result = document.querySelector("#result-container")
+    result.textContent = msg
+}
+
+function updateScoreDisplay() {
+    const playerScoreDiplay = document.querySelector('#player-score')
+    const computerScoreDiplay = document.querySelector('#computer-score')
+
+    playerScoreDiplay.textContent = `player score: ${playerScore}`
+    computerScoreDiplay.textContent = `cpu score: ${computerScore}`
+}
+
+function playRound(e) {
+    checkRoundResult(e.srcElement.id, getComputerChoice())
+    
+}
+
+const buttons = document.querySelectorAll('button')
+buttons.forEach(button => {
+    button.addEventListener('click', playRound)
+})
+
